@@ -168,11 +168,11 @@ begin
   graphics_lenght <= conv_std_logic_vector(MEM_SIZE*8*8, GRAPH_MEM_ADDR_WIDTH);
   
   -- removed to inputs pin
-  direct_mode <= '1';
-  display_mode     <= "10";  -- 01 - text mode, 10 - graphics mode, 11 - text & graphics
+  direct_mode <= '0';
+  display_mode     <= "01";  -- 01 - text mode, 10 - graphics mode, 11 - text & graphics
   
   font_size        <= x"1";
-  show_frame       <= '1';
+  show_frame       <= '0';
   foreground_color <= x"FFFFFF";
   background_color <= x"000000";
   frame_color      <= x"FF0000";
@@ -255,6 +255,40 @@ begin
   --char_address
   --char_value
   --char_we
+  
+  char_we <= '1';
+  
+  process(clk_i, rst_n_i, counter) begin 
+	if(rst_n_i = '1') then
+		char_address <= (others => '0');
+	elsif(rising_edge(clik_i)) then
+		if(char_we <= '1') then
+			if(char_address = "01001011000000") then
+				char_address <= (others => '0');
+			else 
+				char_address <= char_address + 1;
+			end if;
+		end if;
+	end if;
+  end process;
+  
+	char_value <= "000001" when char_address = 0 else --a
+				  <= "001100" when char_address = 1 else --l
+				  <= "000110" when char_address = 2 else --e
+				  <= 11 when char_address = 4 else --k
+				  <= 19 when char_address = 5 else --s
+				  <= 1 when char_address = 6 else --a
+				  <= 14 when char_address = 7 else --n
+				  <= 4 when char_address = 8 else --d
+				  <= 18 when char_address = 9 else --r
+				  <= 1 when char_address = 10 else --a
+				  <= 32 when char_address = 11 else --razmak
+				  <= 2 when char_address = 12 else --b
+				  <= 15 when char_address = 13 else --o
+				  <= 10 when char_address = 14 else --j
+				  <= 9 when char_address = 15 else --i
+				  <= 3 when char_address = 16 else --c
+				  <= 32; --razmak
   
   -- koristeci signale realizovati logiku koja pise po GRAPH_MEM
   --pixel_address
