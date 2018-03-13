@@ -275,19 +275,19 @@ begin
 	char_value <= "000001" when char_address = 0 else --a
 				  <= "001100" when char_address = 1 else --l
 				  <= "000110" when char_address = 2 else --e
-				  <= 11 when char_address = 4 else --k
-				  <= 19 when char_address = 5 else --s
-				  <= 1 when char_address = 6 else --a
-				  <= 14 when char_address = 7 else --n
-				  <= 4 when char_address = 8 else --d
+				  <= "001011" when char_address = 4 else --k
+				  <= "010011" when char_address = 5 else --s
+				  <= "000001" when char_address = 6 else --a
+				  <= "001110" when char_address = 7 else --n
+				  <= "000100" when char_address = 8 else --d
 				  <= 18 when char_address = 9 else --r
-				  <= 1 when char_address = 10 else --a
+				  <= "000001" when char_address = 10 else --a
 				  <= 32 when char_address = 11 else --razmak
-				  <= 2 when char_address = 12 else --b
+				  <= "000010" when char_address = 12 else --b
 				  <= 15 when char_address = 13 else --o
 				  <= 10 when char_address = 14 else --j
 				  <= 9 when char_address = 15 else --i
-				  <= 3 when char_address = 16 else --c
+				  <= "000011" when char_address = 16 else --c
 				  <= 32; --razmak
   
   -- koristeci signale realizovati logiku koja pise po GRAPH_MEM
