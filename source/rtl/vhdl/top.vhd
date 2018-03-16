@@ -250,6 +250,33 @@ begin
   --dir_red
   --dir_green
   --dir_blue
+  
+  dir_red <= "11111111" when dir_pixel_column >= 0 and dir_pixel_column <= H_RES/8 else
+				 "11111111" when dir_pixel_column > H_RES/8 and dir_pixel_column <= H_RES/4 else
+				 "00000000" when dir_pixel_column > H_RES/4 and dir_pixel_column <= H_RES/8*3  else
+				 "00000000" when dir_pixel_column > H_RES/8*3 and dir_pixel_column <= H_RES/2  else
+				 "11111111" when dir_pixel_column > H_RES/2 and dir_pixel_column <= H_RES/8*5  else
+				 "11111111" when dir_pixel_column > H_RES/8*5 and dir_pixel_column <= H_RES/8*6  else
+				 "00000000" when dir_pixel_column > H_RES/8*6 and dir_pixel_column <= H_RES/8*7  else
+				 "00000000";
+  
+  dir_green <= "11111111" when dir_pixel_column >= 0 and dir_pixel_column <= H_RES/8  else
+					"11111111" when dir_pixel_column > H_RES/8 and dir_pixel_column <= H_RES/4  else 
+					"11111111" when dir_pixel_column > H_RES/4 and dir_pixel_column <= H_RES/8*3  else
+					"11111111" when dir_pixel_column > H_RES/8*3 and dir_pixel_column <= H_RES/2  else
+					"00000000" when dir_pixel_column > H_RES/2 and dir_pixel_column <= H_RES/8*5  else
+					"00000000" when dir_pixel_column > H_RES/8*5 and dir_pixel_column <= H_RES/8*6  else
+					"00000000" when dir_pixel_column > H_RES/8*6 and dir_pixel_column <= H_RES/8*7  else
+					"00000000";
+  
+  dir_blue <= "11111111" when dir_pixel_column >= 0 and dir_pixel_column <= H_RES/8  else
+				  "00000000" when dir_pixel_column > H_RES/8 and dir_pixel_column <= H_RES/4  else
+				  "11111111" when dir_pixel_column > H_RES/4 and dir_pixel_column <= H_RES/8*3  else
+				  "00000000" when dir_pixel_column > H_RES/8*3 and dir_pixel_column <= H_RES/2  else
+				  "11111111" when dir_pixel_column > H_RES/2 and dir_pixel_column <= H_RES/8*5  else
+				  "00000000" when dir_pixel_column > H_RES/8*5 and dir_pixel_column <= H_RES/8*6  else
+				  "11111111" when dir_pixel_column > H_RES/8*6 and dir_pixel_column <= H_RES/8*7  else
+				  "00000000";
  
   -- koristeci signale realizovati logiku koja pise po TXT_MEM
   --char_address
@@ -258,11 +285,11 @@ begin
   
   char_we <= '1';
   
-  process(clk_i, rst_n_i, counter) begin 
-	if(rst_n_i = '1') then
+  process(pix_clock_s, reset_n_i) begin 
+	if(reset_n_i = '0') then
 		char_address <= (others => '0');
-	elsif(rising_edge(clik_i)) then
-		if(char_we <= '1') then
+	elsif(rising_edge(pix_clock_s)) then
+		if(char_we = '1') then
 			if(char_address = "01001011000000") then
 				char_address <= (others => '0');
 			else 
@@ -272,23 +299,23 @@ begin
 	end if;
   end process;
   
-	char_value <= "000001" when char_address = 0 else --a
-				  <= "001100" when char_address = 1 else --l
-				  <= "000110" when char_address = 2 else --e
-				  <= "001011" when char_address = 4 else --k
-				  <= "010011" when char_address = 5 else --s
-				  <= "000001" when char_address = 6 else --a
-				  <= "001110" when char_address = 7 else --n
-				  <= "000100" when char_address = 8 else --d
-				  <= 18 when char_address = 9 else --r
-				  <= "000001" when char_address = 10 else --a
-				  <= 32 when char_address = 11 else --razmak
-				  <= "000010" when char_address = 12 else --b
-				  <= 15 when char_address = 13 else --o
-				  <= 10 when char_address = 14 else --j
-				  <= 9 when char_address = 15 else --i
-				  <= "000011" when char_address = 16 else --c
-				  <= 32; --razmak
+	char_value <= "000001" when char_address = 80 and char_we = '1' else --a
+				     "001100" when char_address = 81 and char_we = '1' else --l
+				     "000110" when char_address = 82 and char_we = '1' else --e
+				     "001011" when char_address = 83 and char_we = '1' else --k
+				     "010011" when char_address = 84 and char_we = '1' else --s
+				     "000001" when char_address = 85 and char_we = '1' else --a
+				     "001110" when char_address = 86 and char_we = '1' else --n
+				     "000100" when char_address = 87 and char_we = '1' else --d
+				     "010010" when char_address = 88 and char_we = '1' else --r
+				     "000001" when char_address = 89 and char_we = '1' else --a
+				     "100000" when char_address = 90 and char_we = '1' else --razmak
+				     "000010" when char_address = 91 and char_we = '1' else --b
+				     "001111" when char_address = 92 and char_we = '1' else --o
+				     "001010" when char_address = 93 and char_we = '1' else --j
+				     "001001" when char_address = 94 and char_we = '1' else --i
+				     "000011" when char_address = 95 and char_we = '1' else --c
+				     "100000"; --razmak
   
   -- koristeci signale realizovati logiku koja pise po GRAPH_MEM
   --pixel_address
